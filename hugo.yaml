@@ -1,0 +1,24 @@
+baseURL: "https://dvishoot.com/"
+title: "Daniel Vishoot"
+theme: "PaperMod"
+
+params:
+  defaultTheme: light
+  # Profile Mode (for that landing page look)
+  profileMode:
+    enabled: true
+    title: "Daniel Vishoot"
+    subtitle: "System Architect | Alpinist | Performance Engineer"
+    imageUrl: "me_climbing.jpg" # Put this in /static/
+    imageTitle: "Summit Push"
+    buttons:
+      - name: Engineering
+        url: "/posts/engineering"
+      - name: Adventures
+        url: "/posts/adventures"
+      - name: Resume
+        url: "/resume.pdf"
+
+  # The Footer Stat Line
+  footer:
+    text: "> 5000km Run | 2000 TPS Debugged | 14,000ft Climbed"
