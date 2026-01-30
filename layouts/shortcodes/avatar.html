@@ -1,0 +1,13 @@
+{{- $src := (.Get "src") | default (site.Params.avatar | default "") -}}
+{{- $alt := (.Get "alt") | default (site.Params.avatarAlt | default "Avatar illustration") -}}
+{{- $size := (.Get "size") | default "120" -}}
+
+{{- if $src -}}
+  {{- $p := printf "static/%s" (strings.TrimPrefix "/" $src) -}}
+  {{- if fileExists $p -}}
+<figure class="about-avatar">
+  <img class="about-avatar-img" src="{{ $src | relURL }}" alt="{{ $alt }}" width="{{ $size }}" height="{{ $size }}" loading="lazy" decoding="async">
+</figure>
+  {{- end -}}
+{{- end -}}
+

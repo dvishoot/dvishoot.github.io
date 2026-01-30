@@ -1,0 +1,12 @@
+{{- $cfg := site.Params.reply | default dict -}}
+{{- $enabled := $cfg.enabled | default false -}}
+{{- $href := $cfg.url | default "/about/#contact" -}}
+{{- $label := $cfg.label | default "Reply" -}}
+
+{{- /* Show on posts only (engineering/adventures live under /posts/...). */ -}}
+{{- if and $enabled (eq .Section "posts") -}}
+  <div class="post-reply">
+    <a class="post-reply-link" href="{{ $href | relURL }}">{{ $label }}</a>
+  </div>
+{{- end -}}
+

@@ -1,0 +1,36 @@
+<section class="home-hero">
+  {{ $hero := site.Params.home.hero }}
+  <div class="hero-text">
+    {{ with $hero.eyebrow }}<p class="eyebrow">{{ . }}</p>{{ end }}
+    <h1>{{ $hero.title | default site.Title }}</h1>
+    {{ with $hero.lede }}<p class="lede">{{ . }}</p>{{ end }}
+  </div>
+</section>
+<section class="home-pins" aria-label="Pinned">
+  <header class="pins-head">
+    <p class="eyebrow">Pinned</p>
+    <h2>Start Here</h2>
+  </header>
+  <div class="pins-grid">
+    {{- with site.GetPage "posts/engineering" -}}
+      {{- with (index (.RegularPages.ByDate.Reverse | first 1) 0) -}}
+    <article class="pin-card">
+      <div class="pin-kicker">Engineering</div>
+      <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <p class="pin-summary">{{ .Summary | plainify | htmlUnescape }}</p>
+      <a class="pin-more" href="/posts/engineering/">Browse engineering</a>
+    </article>
+      {{- end -}}
+    {{- end -}}
+    {{- with site.GetPage "posts/adventures" -}}
+      {{- with (index (.RegularPages.ByDate.Reverse | first 1) 0) -}}
+    <article class="pin-card">
+      <div class="pin-kicker">Adventures</div>
+      <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+      <p class="pin-summary">{{ .Summary | plainify | htmlUnescape }}</p>
+      <a class="pin-more" href="/posts/adventures/">Browse adventures</a>
+    </article>
+      {{- end -}}
+    {{- end -}}
+  </div>
+</section>

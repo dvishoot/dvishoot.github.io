@@ -1,0 +1,60 @@
+{{- if eq .Kind "section" -}}
+  {{- $sectionPrefix := .RelPermalink -}}
+  {{- $items := slice -}}
+  {{- range $term, $weighted := site.Taxonomies.series -}}
+    {{- $pages := $weighted.Pages | default $weighted -}}
+    {{- $inSection := slice -}}
+    {{- range $pages -}}
+      {{- if strings.HasPrefix .RelPermalink $sectionPrefix -}}
+        {{- $inSection = $inSection | append . -}}
+      {{- end -}}
+    {{- end -}}
+    {{- if ge (len $inSection) 2 -}}
+      {{- $inSection = sort $inSection "Date" -}}
+      {{- $termSlug := urlize $term -}}
+      {{- $termPage := site.GetPage (printf "/series/%s" $termSlug) -}}
+      {{- $first := index $inSection 0 -}}
+      {{- $desc := "" -}}
+      {{- $display := "" -}}
+      {{- with $termPage -}}
+        {{- $desc = .Description | default .Summary | plainify -}}
+        {{- $display = .Title -}}
+      {{- end -}}
+      {{- if not $desc -}}
+        {{- $desc = $first.Param "series_summary" | default ($first.Param "series_blurb" | default ($first.Summary | plainify)) -}}
+      {{- end -}}
+      {{- if not $display -}}
+        {{- $display = strings.Title $term -}}
+      {{- end -}}
+      {{- $items = $items | append (dict "name" $display "slug" $termSlug "count" (len $inSection) "first" $first "desc" $desc "termPage" $termPage) -}}
+    {{- end -}}
+  {{- end -}}
+
+  {{- if gt (len $items) 0 -}}
+    {{- $items = sort $items "name" -}}
+    <section class="series-section" aria-label="Series">
+      <header class="series-head">
+        <p class="eyebrow">Series</p>
+        <h2>Series</h2>
+      </header>
+      <div class="series-list">
+        {{- range $items -}}
+          {{- $termLink := (printf "/series/%s/" .slug) | relURL -}}
+          {{- with .termPage }}{{- $termLink = .RelPermalink -}}{{- end -}}
+          <article class="series-item">
+            <div class="series-main">
+              <h3 class="series-title"><a href="{{ $termLink }}">{{ .name }}</a></h3>
+              {{- if .desc -}}
+                <p class="series-desc">{{ .desc }}</p>
+              {{- end -}}
+            </div>
+            <div class="series-meta">
+              <span class="series-count">{{ .count }} parts</span>
+              <a class="series-start" href="{{ .first.RelPermalink }}">Start here</a>
+            </div>
+          </article>
+        {{- end -}}
+      </div>
+    </section>
+  {{- end -}}
+{{- end -}}

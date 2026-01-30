@@ -1,0 +1,163 @@
+{{- define "main" }}
+
+{{- $seriesTerm := "" -}}
+{{- with .Params.series -}}
+  {{- if reflect.IsSlice . -}}
+    {{- $seriesTerm = index . 0 -}}
+  {{- else -}}
+    {{- $seriesTerm = . -}}
+  {{- end -}}
+{{- end -}}
+{{- $seriesTermSlug := "" -}}
+{{- $seriesTermKey := "" -}}
+{{- $seriesPages := slice -}}
+{{- $seriesTotal := 0 -}}
+{{- $seriesIndex := 0 -}}
+{{- $seriesFirst := false -}}
+{{- $seriesTermPage := "" -}}
+{{- $seriesGroup := false -}}
+{{- if $seriesTerm -}}
+  {{- $seriesTermSlug = urlize $seriesTerm -}}
+  {{- $seriesTermKey = strings.ToLower $seriesTerm -}}
+  {{- $seriesTermPage = site.GetPage (printf "/series/%s" $seriesTermSlug) -}}
+  {{- $seriesGroup = index site.Taxonomies.series $seriesTermKey -}}
+  {{- if not $seriesGroup -}}
+    {{- $seriesGroup = index site.Taxonomies.series $seriesTermSlug -}}
+  {{- end -}}
+  {{- if not $seriesGroup -}}
+    {{- $seriesGroup = index site.Taxonomies.series $seriesTerm -}}
+  {{- end -}}
+  {{- with $seriesGroup -}}
+    {{- $seriesPages = .Pages | default . -}}
+    {{- $seriesPages = sort $seriesPages "Date" -}}
+    {{- $sectionPrefix := "" -}}
+    {{- with $.CurrentSection -}}
+      {{- $sectionPrefix = .RelPermalink -}}
+    {{- end -}}
+    {{- if $sectionPrefix -}}
+      {{- $filtered := slice -}}
+      {{- range $seriesPages -}}
+        {{- if strings.HasPrefix .RelPermalink $sectionPrefix -}}
+          {{- $filtered = $filtered | append . -}}
+        {{- end -}}
+      {{- end -}}
+      {{- $seriesPages = $filtered -}}
+    {{- end -}}
+    {{- $seriesTotal = len $seriesPages -}}
+    {{- if gt $seriesTotal 0 -}}
+      {{- $seriesFirst = index $seriesPages 0 -}}
+    {{- end -}}
+    {{- range $i, $p := $seriesPages -}}
+      {{- if eq $p.RelPermalink $.RelPermalink -}}
+        {{- $seriesIndex = add $i 1 -}}
+      {{- end -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- $prevInSeries := false -}}
+{{- $nextInSeries := false -}}
+{{- if and (gt $seriesIndex 0) (ge $seriesTotal 2) -}}
+  {{- if gt $seriesIndex 1 -}}
+    {{- $prevInSeries = index $seriesPages (sub $seriesIndex 2) -}}
+  {{- end -}}
+  {{- if lt $seriesIndex $seriesTotal -}}
+    {{- $nextInSeries = index $seriesPages $seriesIndex -}}
+  {{- end -}}
+{{- end -}}
+
+{{/* PaperMod single with a small "Reply" affordance appended in the post footer. */}}
+<article class="post-single">
+  <header class="post-header">
+    {{ partial "breadcrumbs.html" . }}
+    <h1 class="post-title entry-hint-parent">
+      {{ .Title }}
+      {{- if .Draft }}
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="35" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+      {{- end }}
+    </h1>
+    {{- if .Description }}
+    <div class="post-description">
+      {{ .Description }}
+    </div>
+    {{- end }}
+    {{- if not (.Param "hideMeta") }}
+    <div class="post-meta">
+      {{- partial "post_meta.html" . -}}
+      {{- partial "translation_list.html" . -}}
+      {{- partial "edit_post.html" . -}}
+      {{- partial "post_canonical.html" . -}}
+    </div>
+    {{- end }}
+    {{- if and $seriesTerm (ge $seriesTotal 2) -}}
+    <div class="series-line">
+      <span class="series-label">Series:</span>
+      {{- $seriesDisplay := $seriesTerm -}}
+      {{- with $seriesTermPage -}}
+        {{- $seriesDisplay = .Title -}}
+      {{- else -}}
+        {{- $seriesDisplay = strings.Title $seriesTermKey -}}
+      {{- end -}}
+      <a class="series-link" href="{{ with $seriesTermPage }}{{ .RelPermalink }}{{ else }}{{ printf "/series/%s/" $seriesTermSlug | relURL }}{{ end }}">{{ $seriesDisplay }}</a>
+      <span class="series-sep">·</span>
+      <span class="series-part">Part {{ if gt $seriesIndex 0 }}{{ $seriesIndex }}{{ else }}1{{ end }} of {{ $seriesTotal }}</span>
+      {{- if and $seriesFirst (gt $seriesIndex 1) -}}
+        <span class="series-sep">·</span>
+        <a class="series-start" href="{{ $seriesFirst.RelPermalink }}">Start at Part 1</a>
+      {{- end -}}
+    </div>
+    {{- end }}
+  </header>
+  {{- $isHidden := (.Param "cover.hiddenInSingle") | default (.Param "cover.hidden") | default false }}
+  {{- partial "cover.html" (dict "cxt" . "IsSingle" true "isHidden" $isHidden) }}
+  {{- if (.Param "ShowToc") }}
+  {{- partial "toc.html" . }}
+  {{- end }}
+
+  {{- if .Content }}
+  <div class="post-content">
+    {{- if not (.Param "disableAnchoredHeadings") }}
+    {{- partial "anchored_headings.html" .Content -}}
+    {{- else }}{{ .Content }}{{ end }}
+  </div>
+  {{- end }}
+
+  <footer class="post-footer">
+    {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
+    <ul class="post-tags">
+      {{- range ($.GetTerms $tags) }}
+      <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
+      {{- end }}
+    </ul>
+
+    {{- if or $prevInSeries $nextInSeries -}}
+    <nav class="series-nav" aria-label="Series navigation">
+      {{- if $prevInSeries -}}
+        <a class="series-prev" href="{{ $prevInSeries.RelPermalink }}">← Previous in series</a>
+      {{- end -}}
+      {{- if $nextInSeries -}}
+        <a class="series-next" href="{{ $nextInSeries.RelPermalink }}">Next in series →</a>
+      {{- end -}}
+    </nav>
+    {{- end -}}
+
+    {{- partial "post_reply.html" . -}}
+
+    {{- if (.Param "ShowPostNavLinks") }}
+    {{- partial "post_nav_links.html" . }}
+    {{- end }}
+    {{- if (and site.Params.ShowShareButtons (ne .Params.disableShare true)) }}
+    {{- partial "share_icons.html" . -}}
+    {{- end }}
+  </footer>
+
+  {{- if (.Param "comments") }}
+  {{- partial "comments.html" . }}
+  {{- end }}
+</article>
+
+{{- end }}{{/* end main */}}

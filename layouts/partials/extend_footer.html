@@ -1,0 +1,33 @@
+{{/* Palette switcher click handler. */}}
+<script>
+(() => {
+  const palettes = ["palette-burgundy", "palette-teal", "palette-amber"];
+
+  function applyPalette(p) {
+    const html = document.documentElement;
+    for (const c of palettes) html.classList.remove(c);
+    html.classList.add(p);
+    try { localStorage.setItem("pref-palette", p); } catch (e) {}
+
+    document.querySelectorAll("[data-palette]").forEach((btn) => {
+      btn.setAttribute("aria-pressed", btn.getAttribute("data-palette") === p ? "true" : "false");
+    });
+  }
+
+  function initPressedState() {
+    const html = document.documentElement;
+    const current = palettes.find((p) => html.classList.contains(p));
+    if (current) applyPalette(current);
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target && e.target.closest && e.target.closest("[data-palette]");
+    if (!btn) return;
+    const p = btn.getAttribute("data-palette");
+    if (p && palettes.includes(p)) applyPalette(p);
+  });
+
+  initPressedState();
+})();
+</script>
+

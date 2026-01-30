@@ -1,0 +1,18 @@
+{{ partial "fonts.html" . }}
+{{/* Apply palette preference ASAP to avoid noticeable flash. */}}
+<script>
+(() => {
+  const palettes = ["palette-burgundy", "palette-teal", "palette-amber"];
+  try {
+    const html = document.documentElement;
+    const stored = localStorage.getItem("pref-palette");
+    const fallback = {{ site.Params.bodyClass | default "" | jsonify }};
+    const next = stored || fallback;
+    if (!next) return;
+    for (const p of palettes) html.classList.remove(p);
+    html.classList.add(next);
+  } catch (e) {
+    /* ignore */
+  }
+})();
+</script>

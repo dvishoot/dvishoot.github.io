@@ -3,22 +3,68 @@ title: "Daniel Vishoot"
 theme: "PaperMod"
 
 params:
-  defaultTheme: light
-  # Profile Mode (for that landing page look)
-  profileMode:
+  defaultTheme: auto
+  bodyClass: "palette-burgundy"
+  mainSections:
+    - posts
+  avatar: "/img/avatar.png"
+  avatarAlt: "Illustrated avatar portrait"
+  reply:
     enabled: true
-    title: "Daniel Vishoot"
-    subtitle: "System Architect | Alpinist | Performance Engineer"
-    imageUrl: "me_climbing.jpg" # Put this in /static/
-    imageTitle: "Summit Push"
-    buttons:
-      - name: Engineering
-        url: "/posts/engineering"
-      - name: Adventures
-        url: "/posts/adventures"
-      - name: Resume
-        url: "/resume.pdf"
+    url: "/about/#contact"
+    label: "Reply"
 
-  # The Footer Stat Line
-  footer:
-    text: "> 5000km Run | 2000 TPS Debugged | 14,000ft Climbed"
+  # PaperMod search (used by /search/)
+  fuseOpts:
+    isCaseSensitive: false
+    shouldSort: true
+    location: 0
+    distance: 1000
+    threshold: 0.3
+    minMatchCharLength: 2
+    keys:
+      - title
+      - permalink
+      - summary
+      - content
+
+  home:
+    hero:
+      eyebrow: "Nocturne / Field Notes"
+      title: "Daniel Vishoot"
+      lede: "Systems architect and alpinist, writing from the late shift: engineering logs, alpine trip reports, and the thinking that ties them together."
+
+taxonomies:
+  tag: tags
+  category: categories
+  series: series
+
+menu:
+  pillars:
+    - identifier: posts/engineering
+      name: Engineering
+      pageRef: posts/engineering
+      weight: 10
+    - identifier: posts/adventures
+      name: Adventures
+      pageRef: posts/adventures
+      weight: 20
+  utility:
+    - identifier: about
+      name: About
+      pageRef: about
+      weight: 10
+    - identifier: now
+      name: Now
+      pageRef: now
+      weight: 20
+    - identifier: resume
+      name: Resume
+      url: /resume.pdf
+      weight: 30
+
+outputs:
+  home:
+    - HTML
+    - RSS
+    - JSON
