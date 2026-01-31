@@ -65,6 +65,7 @@ content/series/latency-logs/_index.md
 ## Site Features
 
 - **Rail‑first navigation** with palette switcher and dark mode toggle.
+- **Dedicated mobile header** (separate from desktop rail) with a compact menu panel.
 - **Palette switching** stored in localStorage (`pref-palette`).
 - **Series UI**:
   - Subtle line under post title: `Series: X · Part N of M`

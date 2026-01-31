@@ -376,7 +376,7 @@ html[data-theme="dark"] .post-entry { box-shadow:none; }
 .series-count { color: var(--tertiary); }
 
 /* make the theme toggle more obvious */
-button#theme-toggle {
+.theme-toggle {
   border: none;
   border-radius: 999px;
   padding: 0;
@@ -389,15 +389,15 @@ button#theme-toggle {
   height: 26px;
   margin: 0 0 0 8px;
 }
-html[data-theme="dark"] button#theme-toggle {
+html[data-theme="dark"] .theme-toggle {
   background: transparent;
   box-shadow: none;
 }
-button#theme-toggle:focus,
-button#theme-toggle:focus-visible {
+.theme-toggle:focus,
+.theme-toggle:focus-visible {
   outline: none;
 }
-button#theme-toggle svg {
+.theme-toggle svg {
   display: block;
 }
 .logo,
@@ -421,7 +421,11 @@ button#theme-toggle svg {
     0 0 16px color-mix(in srgb, var(--accent-glow) 70%, transparent);
 }
 @media screen and (max-width: 959px) {
-  .rail-avatar { display: none; }
+  .rail-avatar {
+    width: 28px;
+    height: 28px;
+  }
+  .logo-mark { gap: 8px; }
 }
 
 .about-avatar {
@@ -501,20 +505,19 @@ html[data-theme="dark"] body {
     var(--theme) !important;
 }
 
-/* Option C: left-rail dossier layout (desktop). Keep mobile as PaperMod defaults. */
+/* Option C: left-rail dossier layout (desktop) + dedicated mobile header. */
 @media screen and (max-width: 959px) {
-  /* On small screens, keep header simple and avoid the full rail UI. */
-  .rail-groups,
-  .rail-divider,
-  .rail-group-title,
-  #menu-util,
-  .rail-bottom {
-    display: none;
+  .nav-desktop { display: none; }
+  .nav-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
   }
-
-  .mobile-nav {
-    display: block;
-    width: 100%;
+  .mobile-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
   }
   .mobile-menu {
     width: 100%;
@@ -636,7 +639,7 @@ html[data-theme="dark"] body {
 
   .rail-top { width: 100%; display: flex; flex-direction: column; gap: 18px; }
   .rail-bottom { display: none; }
-  .mobile-nav { display: none; }
+  .nav-mobile { display: none; }
 
   .rail-divider { width: 100%; height: 1px; background: var(--border); opacity: 0.75; }
 
