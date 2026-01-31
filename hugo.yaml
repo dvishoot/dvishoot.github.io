@@ -4,7 +4,7 @@ theme: "PaperMod"
 
 params:
   defaultTheme: auto
-  bodyClass: "palette-burgundy"
+  bodyClass: "palette-teal"
   mainSections:
     - posts
   avatar: "/img/avatar.png"

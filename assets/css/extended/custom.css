@@ -504,11 +504,93 @@ html[data-theme="dark"] body {
 /* Option C: left-rail dossier layout (desktop). Keep mobile as PaperMod defaults. */
 @media screen and (max-width: 959px) {
   /* On small screens, keep header simple and avoid the full rail UI. */
+  .rail-groups,
   .rail-divider,
   .rail-group-title,
   #menu-util,
   .rail-bottom {
     display: none;
+  }
+
+  .mobile-nav {
+    display: block;
+    width: 100%;
+  }
+  .mobile-menu {
+    width: 100%;
+  }
+  .mobile-menu-toggle {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: var(--code);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--secondary);
+    background: color-mix(in srgb, var(--entry) 82%, transparent);
+  }
+  .mobile-menu-toggle::-webkit-details-marker { display: none; }
+  .mobile-menu-toggle:focus-visible {
+    outline: 2px solid color-mix(in srgb, var(--accent) 60%, transparent);
+    outline-offset: 2px;
+  }
+  .mobile-menu-icon {
+    font-size: 14px;
+    color: var(--accent);
+  }
+  .mobile-menu[open] .mobile-menu-toggle {
+    color: var(--primary);
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 35%, transparent);
+  }
+  .mobile-menu-panel {
+    margin-top: 10px;
+    padding: 12px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--entry) 86%, transparent);
+  }
+  .mobile-menu-group + .mobile-menu-group {
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid color-mix(in srgb, var(--border) 70%, transparent);
+  }
+  .mobile-menu-title {
+    margin: 0 0 6px;
+    font-family: var(--code);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--tertiary);
+  }
+  .mobile-menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .mobile-menu-list a {
+    display: block;
+    padding: 6px 8px;
+    border-radius: 8px;
+    color: var(--primary);
+    text-decoration: none;
+    background: color-mix(in srgb, var(--entry) 80%, transparent);
+  }
+  .mobile-menu-list a[aria-current="page"] {
+    font-weight: 600;
+    color: var(--accent);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .mobile-menu-list a:active {
+    transform: translateY(1px);
   }
 }
 
@@ -554,6 +636,7 @@ html[data-theme="dark"] body {
 
   .rail-top { width: 100%; display: flex; flex-direction: column; gap: 18px; }
   .rail-bottom { display: none; }
+  .mobile-nav { display: none; }
 
   .rail-divider { width: 100%; height: 1px; background: var(--border); opacity: 0.75; }
 

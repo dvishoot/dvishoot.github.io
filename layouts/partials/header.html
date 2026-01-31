@@ -43,6 +43,59 @@
         </div>
       </div>
 
+      <div class="mobile-nav" aria-label="Mobile navigation">
+        <details class="mobile-menu">
+          <summary class="mobile-menu-toggle">
+            <span>Menu</span>
+            <span class="mobile-menu-icon" aria-hidden="true">☰</span>
+          </summary>
+          <div class="mobile-menu-panel">
+            <div class="mobile-menu-group">
+              <p class="mobile-menu-title">Pillars</p>
+              <ul class="mobile-menu-list">
+                {{- range site.Menus.pillars -}}
+                {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL -}}
+                {{- $page_url:= $currentPage.Permalink | absLangURL -}}
+                {{- $is_active := or (eq $menu_item_url $page_url) (strings.HasPrefix $page_url $menu_item_url) -}}
+                <li>
+                  <a href="{{ .URL | absLangURL }}" {{- if $is_active }} aria-current="page"{{- end -}}>{{- .Name -}}</a>
+                </li>
+                {{- end -}}
+              </ul>
+            </div>
+
+            <div class="mobile-menu-group">
+              <p class="mobile-menu-title">Utility</p>
+              <ul class="mobile-menu-list">
+                {{- range site.Menus.utility -}}
+                {{- $menu_item_url := (cond (strings.HasSuffix .URL "/") .URL (printf "%s/" .URL) ) | absLangURL -}}
+                {{- $page_url:= $currentPage.Permalink | absLangURL -}}
+                {{- $is_active := or (eq $menu_item_url $page_url) (strings.HasPrefix $page_url $menu_item_url) -}}
+                <li>
+                  <a href="{{ .URL | absLangURL }}" {{- if $is_active }} aria-current="page"{{- end -}}>{{- .Name -}}</a>
+                </li>
+                {{- end -}}
+              </ul>
+            </div>
+
+            <div class="mobile-menu-group">
+              <p class="mobile-menu-title">Palette</p>
+              <div class="palette-switch" role="group" aria-label="Palette">
+                <button class="palette-btn" type="button" data-palette="palette-burgundy" aria-label="Burgundy palette" aria-pressed="false" title="Burgundy">
+                  <span class="swatch swatch-burgundy" aria-hidden="true"></span>
+                </button>
+                <button class="palette-btn" type="button" data-palette="palette-teal" aria-label="Teal palette" aria-pressed="false" title="Teal">
+                  <span class="swatch swatch-teal" aria-hidden="true"></span>
+                </button>
+                <button class="palette-btn" type="button" data-palette="palette-amber" aria-label="Amber palette" aria-pressed="false" title="Amber">
+                  <span class="swatch swatch-amber" aria-hidden="true"></span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </details>
+      </div>
+
       <div class="rail-divider" aria-hidden="true"></div>
 
       <div class="rail-groups">
