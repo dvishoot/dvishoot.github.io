@@ -3,16 +3,17 @@
 <script>
 (() => {
   const palettes = ["palette-burgundy", "palette-teal", "palette-amber"];
+  const html = document.documentElement;
+  const fallback = {{ site.Params.bodyClass | default "palette-teal" | jsonify }};
+  let stored = "";
   try {
-    const html = document.documentElement;
-    const stored = localStorage.getItem("pref-palette");
-    const fallback = {{ site.Params.bodyClass | default "" | jsonify }};
-    const next = stored || fallback;
-    if (!next) return;
-    for (const p of palettes) html.classList.remove(p);
-    html.classList.add(next);
+    stored = localStorage.getItem("pref-palette") || "";
   } catch (e) {
     /* ignore */
   }
+  const next = stored || fallback;
+  if (!next) return;
+  for (const p of palettes) html.classList.remove(p);
+  html.classList.add(next);
 })();
 </script>

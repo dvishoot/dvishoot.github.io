@@ -4,7 +4,7 @@
 
 <!DOCTYPE html>
 {{- $theme := site.Params.defaultTheme | default "auto" }}
-{{- $palette := site.Params.bodyClass | default "" }}
+{{- $palette := site.Params.bodyClass | default "palette-teal" }}
 {{- if eq $theme "dark" }}
 <html lang="{{ site.Language }}" dir="{{ .Language.LanguageDirection | default "auto" }}" data-theme="dark" class="{{ $palette }}">
 {{- else if eq $theme "light" }}

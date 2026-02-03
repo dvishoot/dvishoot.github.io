@@ -2,6 +2,7 @@
 <script>
 (() => {
   const palettes = ["palette-burgundy", "palette-teal", "palette-amber"];
+  const fallback = {{ site.Params.bodyClass | default "palette-teal" | jsonify }};
 
   function applyPalette(p) {
     const html = document.documentElement;
@@ -17,7 +18,11 @@
   function initPressedState() {
     const html = document.documentElement;
     const current = palettes.find((p) => html.classList.contains(p));
-    if (current) applyPalette(current);
+    if (current) {
+      applyPalette(current);
+      return;
+    }
+    if (fallback && palettes.includes(fallback)) applyPalette(fallback);
   }
 
   document.addEventListener("click", (e) => {
@@ -30,4 +35,3 @@
   initPressedState();
 })();
 </script>
-
