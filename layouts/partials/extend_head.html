@@ -1,4 +1,13 @@
 {{ partial "fonts.html" . }}
+{{- $fv := site.Params.faviconVersion | default "20260203" -}}
+{{- $icon16 := printf "favicon-16x16.png?v=%s" $fv -}}
+{{- $icon32 := printf "favicon-32x32.png?v=%s" $fv -}}
+{{- $icon180 := printf "apple-touch-icon.png?v=%s" $fv -}}
+{{- $iconIco := printf "favicon.ico?v=%s" $fv -}}
+<link rel="icon" type="image/png" sizes="32x32" href="{{ $icon32 | relURL }}">
+<link rel="icon" type="image/png" sizes="16x16" href="{{ $icon16 | relURL }}">
+<link rel="apple-touch-icon" sizes="180x180" href="{{ $icon180 | relURL }}">
+<link rel="shortcut icon" href="{{ $iconIco | relURL }}">
 {{/* Apply palette preference ASAP to avoid noticeable flash. */}}
 <script>
 (() => {
