@@ -13,6 +13,38 @@
   --bg-glow-strong: rgba(0,0,0,0.18);
 }
 
+/* Default to teal when no palette class is present. */
+html:not(.palette-burgundy):not(.palette-teal):not(.palette-amber) {
+  --theme: #f4f1ec;
+  --entry: #f8f5f0;
+  --primary: #0f1a1a;
+  --secondary: #2f3f3f;
+  --tertiary: #4e5d5d;
+  --accent: #0f6e6e;
+  --accent-soft: #2b8e8e;
+  --accent-glow: rgba(15,110,110,0.22);
+  --accent-glow-strong: rgba(15,110,110,0.35);
+  --bg-glow: rgba(15,110,110,0.14);
+  --bg-glow-strong: rgba(15,110,110,0.22);
+  --muted: #9ab3b3;
+  --border: #dfe7e7;
+}
+html:not(.palette-burgundy):not(.palette-teal):not(.palette-amber)[data-theme="dark"] {
+  --theme: #0a1112;
+  --entry: #1a2626;
+  --primary: #eaf1f1;
+  --secondary: #cbd7d7;
+  --tertiary: #9eb3b3;
+  --accent: #63d0d0;
+  --accent-soft: #7be0e0;
+  --accent-glow: rgba(99,208,208,0.35);
+  --accent-glow-strong: rgba(99,208,208,0.6);
+  --bg-glow: rgba(99,208,208,0.11);
+  --bg-glow-strong: rgba(99,208,208,0.17);
+  --muted: #5f7a7a;
+  --border: #223434;
+}
+
 /* Palette: Burgundy (default) */
 html.palette-burgundy {
   --theme: #f5f0ea;

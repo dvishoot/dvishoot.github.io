@@ -2,7 +2,8 @@
 <script>
 (() => {
   const palettes = ["palette-burgundy", "palette-teal", "palette-amber"];
-  const fallback = {{ site.Params.bodyClass | default "palette-teal" | jsonify }};
+  const configFallback = {{ site.Params.bodyClass | default "palette-teal" | jsonify }};
+  const fallback = palettes.includes(configFallback) ? configFallback : "palette-teal";
 
   function applyPalette(p) {
     const html = document.documentElement;
@@ -22,7 +23,7 @@
       applyPalette(current);
       return;
     }
-    if (fallback && palettes.includes(fallback)) applyPalette(fallback);
+    if (fallback) applyPalette(fallback);
   }
 
   document.addEventListener("click", (e) => {

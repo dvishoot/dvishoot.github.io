@@ -4,14 +4,15 @@
 (() => {
   const palettes = ["palette-burgundy", "palette-teal", "palette-amber"];
   const html = document.documentElement;
-  const fallback = {{ site.Params.bodyClass | default "palette-teal" | jsonify }};
+  const configFallback = {{ site.Params.bodyClass | default "palette-teal" | jsonify }};
+  const fallback = palettes.includes(configFallback) ? configFallback : "palette-teal";
   let stored = "";
   try {
     stored = localStorage.getItem("pref-palette") || "";
   } catch (e) {
     /* ignore */
   }
-  const next = stored || fallback;
+  const next = palettes.includes(stored) ? stored : fallback;
   if (!next) return;
   for (const p of palettes) html.classList.remove(p);
   html.classList.add(next);
