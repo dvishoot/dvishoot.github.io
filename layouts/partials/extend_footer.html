@@ -3,12 +3,13 @@
 (() => {
   const palettes = ["palette-burgundy", "palette-teal", "palette-amber"];
   const configFallback = {{ site.Params.bodyClass | default "palette-teal" | jsonify }};
-  const fallback = palettes.includes(configFallback) ? configFallback : "palette-teal";
+  const sanitize = (value) => (value || "").replace(/^['"]+|['"]+$/g, "");
+  const fallback = palettes.includes(sanitize(configFallback)) ? sanitize(configFallback) : "palette-teal";
 
   function applyPalette(p) {
     const html = document.documentElement;
     for (const c of palettes) html.classList.remove(c);
-    html.classList.add(p);
+    html.classList.add(sanitize(p));
     try { localStorage.setItem("pref-palette", p); } catch (e) {}
 
     document.querySelectorAll("[data-palette]").forEach((btn) => {

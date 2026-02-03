@@ -5,10 +5,16 @@
   const palettes = ["palette-burgundy", "palette-teal", "palette-amber"];
   const html = document.documentElement;
   const configFallback = {{ site.Params.bodyClass | default "palette-teal" | jsonify }};
-  const fallback = palettes.includes(configFallback) ? configFallback : "palette-teal";
+  const sanitize = (value) => (value || "").replace(/^['"]+|['"]+$/g, "");
+  const normalizeClassName = () => {
+    const tokens = html.className.split(/\s+/).map((token) => sanitize(token)).filter(Boolean);
+    html.className = Array.from(new Set(tokens)).join(" ");
+  };
+  normalizeClassName();
+  const fallback = palettes.includes(sanitize(configFallback)) ? sanitize(configFallback) : "palette-teal";
   let stored = "";
   try {
-    stored = localStorage.getItem("pref-palette") || "";
+    stored = sanitize(localStorage.getItem("pref-palette") || "");
   } catch (e) {
     /* ignore */
   }
